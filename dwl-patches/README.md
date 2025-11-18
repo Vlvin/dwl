@@ -1,12 +1,14 @@
 ### Description
-Adds (inner) gaps between client windows and (outer) gaps between windows and
-the screen edge in a flexible manner.
+Allow dwl to execute commands from autostart array in your config.h file. And when you exit dwl all processes from autostart array will be killed.
+
+Note: Commands from array are executed using execvp(). So if you need to execute shell command you need to prefix it with "sh", "-c" (change sh to any shell you like).
 
 ### Download
-- [git branch](https://codeberg.org/sevz/dwl/src/branch/vanitygaps)
-- [main 2025-01-20](/dwl/dwl-patches/raw/branch/main/patches/vanitygaps/vanitygaps.patch)
-- [vanitygaps-0.7.patch](/dwl/dwl-patches/raw/branch/main/patches/vanitygaps/vanitygaps-0.7.patch)
+- [git branch](https://codeberg.org/sevz/dwl/src/branch/autostart)
+- [2025-01-20](https://codeberg.org/dwl/dwl-patches/raw/branch/main/patches/autostart/autostart.patch)
+- [0.7](https://codeberg.org/dwl/dwl-patches/raw/branch/main/patches/autostart/autostart-0.7.patch)
 
 ### Authors
 - [sevz](https://codeberg.org/sevz)
-- [Bonicgamer](https://github.com/Bonicgamer)
+- [Rayan Nakib](https://nakibrayan2.pages.dev/)
+- [NFVblog](https://github.com/nf02)
