@@ -26,13 +26,11 @@ static const float fullscreen_bg[]         = {1.0f, 0.5f, 0.5f, 0.1f}; /* You ca
 /* logging */
 static int log_level = WLR_ERROR;
 
-#define DWL_CONF_PATH "/home/vlvin/.config/dwl"
-#define CONFIG_HOME "/home/vlvin/.config"
+#define CONFIG_HOME "/home/potato/.config/"
+#define DWL_CONF_PATH  CONFIG_HOME"dwl/"
+
 static const char *const autostart[] = {
-        "someblocks", NULL,
-        // "swww-daemon", NULL,
-        "swaybg", "-i", CONFIG_HOME"/wallpapers/anime-scenery-sunset-4k-xp-2560x1080.jpg", NULL,
-        NULL /* terminate */
+        DWL_CONF_PATH"autostart.sh", NULL,
 };
 
 
