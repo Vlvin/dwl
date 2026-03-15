@@ -366,6 +366,7 @@ static void spawn(const Arg *arg);
 static void startdrag(struct wl_listener *listener, void *data);
 static void tag(const Arg *arg);
 static void tagmon(const Arg *arg);
+static void hortile(Monitor *m);
 static void tile(Monitor *m);
 static void togglebar(const Arg *arg);
 static void togglefloating(const Arg *arg);
@@ -3097,6 +3098,55 @@ tagmon(const Arg *arg)
 		setmon(sel, dirtomon(arg->i), 0);
 }
 
+void
+hortile(Monitor *m)
+{
+	// unsigned int masterwidth, my, ty, h, r, oe = enablegaps, ie = enablegaps;
+	unsigned int masterheight, mx, tx, w, r, oe = enablegaps, ie = enablegaps;
+	int i, n = 0;
+	Client *c;
+
+	wl_list_for_each(c, &clients, link)
+		if (VISIBLEON(c, m) && !c->isfloating && !c->isfullscreen)
+			n++;
+	if (n == 0)
+		return;
+
+	if (smartgaps == n) {
+		oe = 0; // outer gaps disabled
+	}
+
+	if (n > m->nmaster)
+		// masterwidth = mon->nmaster ? (int)roundf((mon->w.width + mon->gappiv*ie) * mon->mfact) : 0;
+		masterheight = m->nmaster ? (int)roundf((m->w.height + m->gappiv*ie) * m->mfact) : 0;
+	else
+		// masterwidth = mon->w.width - 2*mon->gappov*oe + mon->gappiv*ie;
+		masterheight = m->w.height - 2*m->gappov*oe + m->gappiv*ie;
+	i = 0;
+	// my = ty = mon->gappoh*oe;
+	mx = tx = m->gappoh*oe;
+	wl_list_for_each(c, &clients, link) {
+		if (!VISIBLEON(c, m) || c->isfloating || c->isfullscreen)
+			continue;
+		if (i < m->nmaster) {
+			r = MIN(n, m->nmaster) - i;
+			// h = (mon->w.height - my - mon->gappoh*oe - mon->gappih*ie * (r - 1)) / r;
+			w = (m->w.width - mx - m->gappoh*oe - m->gappih*ie * (r - 1)) / r;
+			resize(c, (struct wlr_box){.x = m->w.x + mx /*+ m->gappov*oe*/, .y = m->w.y + m->gappov*oe/* + my*/,
+				.width = w /*mmasterwidth - m->gappiv*ie*/, .height = masterheight - m->gappiv*ie/*h*/}, 0);
+			// my += c->geom.height + mon->gappih*ie;
+			mx += c->geom.width + m->gappih*ie;
+		} else {
+			r = n - i;
+			// h = (mon->w.height - ty - mon->gappoh*oe - mon->gappih*ie * (r - 1)) / r;
+			w = (m->w.width - tx - m->gappoh*oe - m->gappih*ie * (r - 1)) / r;
+			resize(c, (struct wlr_box){.x = m->w.x + tx/*m->w.x + mw + m->gappov*oe*/, .y = m->w.y + masterheight + m->gappov*oe/*m->w.y + ty*/,
+				.width = w/*m->w.width - mw - 2*m->gappov*oe*/, .height = m->w.height - masterheight - 2*m->gappov*oe/*h*/}, 0);
+			tx += c->geom.width + m->gappih*ie;
+		}
+		i++;
+	}
+}
 void
 tile(Monitor *m)
 {

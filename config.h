@@ -15,10 +15,10 @@ static const unsigned int gappoh           = 10; /* horiz outer gap between wind
 static const unsigned int gappov           = 10; /* vert outer gap between windows and screen edge */
 static const float rootcolor[]             = COLOR(0x222222dd);
 static const float bordercolor[]           = COLOR(0x444444ff);
-static const float focuscolor[]            = COLOR(0x550077ff);
+static const float focuscolor[]            = COLOR(0x9900bbff);
 static const float urgentcolor[]           = COLOR(0xff0000ff);
 /* This conforms to the xdg-protocol. Set the alpha to zero to restore the old behavior */
-static const float fullscreen_bg[]         = {1.0f, 0.5f, 0.5f, 0.1f}; /* You can also use glsl colors */
+static const float fullscreen_bg[]         = {0.0f, 0.0f, 0.0f, 0.0f}; /* You can also use glsl colors */
 
 /* tagging - TAGCOUNT must be no greater than 31 */
 #define TAGCOUNT (9)
@@ -47,8 +47,9 @@ static const Rule rules[] = {
 static const Layout layouts[] = {
 	/* symbol     arrange function */
 	{ "[]=",      tile }, // this is master stack
-	{ "><>",      NULL },    /* no layout function means floating behavior */
+	{ " = ",      hortile }, // this is horizontal master stack
 	{ "[M]",      monocle },
+	{ "><>",      NULL },    /* no layout function means floating behavior */
 };
 
 /* monitors */
@@ -213,8 +214,10 @@ static const Key keys[] = {
 
 	{ 0,                    XKB_KEY_XF86AudioRaiseVolume,          spawn,          SHCMD(VOLUME_CMD "5%+") },
 	{ 0,                    XKB_KEY_XF86AudioLowerVolume,          spawn,          SHCMD(VOLUME_CMD "5%-") },
-	{ 0,                    XKB_KEY_XF86MonBrightnessUp,          spawn,          SHCMD(BRIGHTNESS_CMD "10%+") },
-	{ 0,                    XKB_KEY_XF86MonBrightnessDown,          spawn,          SHCMD(BRIGHTNESS_CMD "10%-") },
+	{ 0,                    XKB_KEY_XF86MonBrightnessUp,           spawn,          SHCMD(BRIGHTNESS_CMD "10%+") },
+	{ 0,                    XKB_KEY_XF86MonBrightnessDown,         spawn,          SHCMD(BRIGHTNESS_CMD "10%-") },
+	{ 0,                    XKB_KEY_Print,                         spawn,          SHCMD("grim -t png - | wl-copy -t image/png") },
+	{ WLR_MODIFIER_LOGO,    XKB_KEY_Print,                         spawn,          SHCMD("grim -g \"$(slurp -d)\" -t png - | wl-copy") },
 }
 // {
 // 	/* Note that Shift changes certain key codes: c -> C, 2 -> at, etc. */
