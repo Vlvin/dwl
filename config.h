@@ -26,7 +26,7 @@ static const float fullscreen_bg[]         = {0.0f, 0.0f, 0.0f, 0.0f}; /* You ca
 /* logging */
 static int log_level = WLR_ERROR;
 
-#define CONFIG_HOME "/home/potato/.config/"
+#define CONFIG_HOME "/home/vlvin/.config/"
 #define DWL_CONF_PATH  CONFIG_HOME"dwl/"
 
 static const char *const autostart[] = {
@@ -138,7 +138,11 @@ static const enum libinput_config_tap_button_map button_map = LIBINPUT_CONFIG_TA
 
 /* commands */
 static const char *termcmd[] = { DWL_CONF_PATH"scripts/terminal.sh", NULL };
-static const char *menucmd[] = { "wmenu-run", "-f", "FiraCode Nerd Font 12", "-N", "000000", "-n", "93A1A1", "-M", "000000", "-m", "93A1A1", "-S", "9900BB", "-s", "EEEEEE", NULL };
+static const char *menucmd[] = { "wmenu-run", NULL };
+static const char *powermenucmd[] = { DWL_CONF_PATH"scripts/powermenu", NULL };
+static const char *wifimenucmd[] = { DWL_CONF_PATH"scripts/wifimenu", NULL };
+static const char *notify_dismiss_all[] = { DWL_CONF_PATH"scripts/notify-dismiss-all.sh", NULL };
+static const char *notify_dismiss_one[] = { DWL_CONF_PATH"scripts/notify-dismiss-one.sh", NULL };
 // static const char *menucmd[] = { "rofi", "-show", "drun", NULL };
 
 
@@ -146,9 +150,14 @@ static const Key keys[] = {
 	/* Note that Shift changes certain key codes: c -> C, 2 -> at, etc. */
 	/* modifier                  key                 function        argument */
 	{ MODKEY,                    XKB_KEY_d,          spawn,          {.v = menucmd} },
+	{ MODKEY|WLR_MODIFIER_ALT,   XKB_KEY_a,          spawn,          {.v = notify_dismiss_all} },
+	{ MODKEY|WLR_MODIFIER_ALT,   XKB_KEY_d,          spawn,          {.v = notify_dismiss_one} },
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_Return,     spawn,          {.v = termcmd} },
+	{ MODKEY,                    XKB_KEY_w,          spawn,          {.v = wifimenucmd} },
+	{ MODKEY,                    XKB_KEY_p,          spawn,          {.v = powermenucmd} },
 	{ MODKEY,                    XKB_KEY_j,          focusstack,     {.i = +1} },
 	{ MODKEY,                    XKB_KEY_k,          focusstack,     {.i = -1} },
+	{ MODKEY,                    XKB_KEY_b,          togglebar,          {.v = menucmd} },
 	{ MODKEY|WLR_MODIFIER_SHIFT,                    XKB_KEY_I,          incnmaster,     {.i = +1} },
 	{ MODKEY|WLR_MODIFIER_SHIFT,                    XKB_KEY_D,          incnmaster,     {.i = -1} },
 	{ MODKEY,                    XKB_KEY_h,          setmfact,       {.f = -0.05f} },

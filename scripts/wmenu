@@ -1,0 +1,2 @@
+#!/usr/bin/env sh
+cat $XDG_CONFIG_HOME/wmenuc/config.txt | xargs wmenu-run

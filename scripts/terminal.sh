@@ -1,1 +1,2 @@
-kitty
+#!/usr/bin/sh
+footclient tmux
