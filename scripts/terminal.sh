@@ -1,2 +1,3 @@
 #!/usr/bin/sh
-footclient tmux
+[ "$XDG_CONFIG_HOME" = "" ] && XDG_CONFIG_HOME="$HOME/.config"
+exec $XDG_CONFIG_HOME/dwl/scripts/clearterminal.sh tmux

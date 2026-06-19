@@ -1,2 +1,2 @@
 #!/usr/bin/env sh
-makoctl dismiss
+exec makoctl dismiss
